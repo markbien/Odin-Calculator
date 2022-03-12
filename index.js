@@ -108,5 +108,8 @@ total.addEventListener("click", compute);
 clearButton.addEventListener("click", () => {
     input.value = "";
     answer.innerText = 0;
+    first = undefined;
+    second = undefined;
+    operator = undefined;
 });
 // del.addEventListener("click", deleteLastChar);
