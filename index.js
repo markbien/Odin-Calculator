@@ -4,8 +4,9 @@ const numbers = document.querySelectorAll(".button.num");
 const operators = document.querySelectorAll(".button.operators");
 const misc = document.querySelectorAll(".misc");
 const total = document.querySelector(".total");
+const answer = document.querySelector('.answer');
 let first, second, operator;
-// const clearButton = document.querySelector(".clear");
+const clearButton = document.querySelector(".clear");
 // const del = document.querySelector(".del");
 
 // function
@@ -92,7 +93,7 @@ function compute() {
       newVal = first / second;
     }
     input.value = "";
-    console.log(newVal);
+    answer.textContent = newVal;
   }
 }
 
@@ -104,5 +105,8 @@ operators.forEach((operator) =>
   operator.addEventListener("click", getFirstNum)
 );
 total.addEventListener("click", compute);
-// clearButton.addEventListener("click", () => (input.value = ""));
+clearButton.addEventListener("click", () => {
+    input.value = "";
+    answer.innerText = 0;
+});
 // del.addEventListener("click", deleteLastChar);

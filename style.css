@@ -75,3 +75,14 @@ main {
 .button:active {
     background: rgb(138, 133, 133);
 }
+
+.answer {
+    color: black;
+    background: white;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    font-size: 2rem;
+    text-align: right;
+    font-weight: 700;
+}
