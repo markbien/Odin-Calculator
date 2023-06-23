@@ -31,8 +31,10 @@ const printToOutput = (input) => {
   }
 };
 
-// function showNumbers(e){
-//   console.log(e);
-// }
+function showNumbers(){
+  printToOutput(this.dataset.key);
+}
 
-// document.querySelectorAll('')
+document.querySelectorAll('button.number').forEach(btn => {
+  btn.addEventListener('click', showNumbers)
+});
