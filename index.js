@@ -1,13 +1,6 @@
 // global variables
 const output = document.querySelector(".output");
 
-const isNum = input => {
-  if (Number(input)) {
-    return true;
-  }
-  return false;
-}
-
 const isNotExceeding_10_digits = ()=> {
   let str = output.textContent;
 
@@ -18,7 +11,6 @@ const isNotExceeding_10_digits = ()=> {
 };
 
 const checkInput = (input) => {
-  if (!isNum(input)) return false;
   if (!isNotExceeding_10_digits()) return false
   return true;
 };
@@ -33,15 +25,18 @@ const printToOutput = (input) => {
 
 function showNumbers(){
   printToOutput(this.dataset.key);
-  firstDigitIsNotZero();
+  // firstDigitIsNotZero();
+  console.log(this.dataset.key);
 }
 
 function firstDigitIsNotZero(){
   outputText = output.textContent;
   const firstDigit = outputText.charAt(0);
 
-  if (firstDigit === "0") {
-    output.textContent = outputText.slice(1);
+  if (outputText.length > 1){
+    if (firstDigit === "0") {
+      output.textContent = outputText.slice(1);
+    }    
   }
 }
 
@@ -52,3 +47,6 @@ function setOutputTextToZero(){
 document.querySelectorAll('button.number').forEach(btn => {
   btn.addEventListener('click', showNumbers)
 });
+
+const ac = document.querySelector("button[data-key='ac']");
+ac.addEventListener('click', setOutputTextToZero);
