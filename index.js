@@ -45,6 +45,10 @@ function firstDigitIsNotZero(){
   }
 }
 
+function setOutputTextToZero(){
+  output.textContent = "0";
+}
+
 document.querySelectorAll('button.number').forEach(btn => {
   btn.addEventListener('click', showNumbers)
 });
