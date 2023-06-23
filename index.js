@@ -1,5 +1,5 @@
+// global variables
 const output = document.querySelector(".output");
-
 
 const isNum = input => {
   if (Number(input)) {
@@ -33,6 +33,16 @@ const printToOutput = (input) => {
 
 function showNumbers(){
   printToOutput(this.dataset.key);
+  firstDigitIsNotZero();
+}
+
+function firstDigitIsNotZero(){
+  outputText = output.textContent;
+  const firstDigit = outputText.charAt(0);
+
+  if (firstDigit === "0") {
+    output.textContent = outputText.slice(1);
+  }
 }
 
 document.querySelectorAll('button.number').forEach(btn => {
