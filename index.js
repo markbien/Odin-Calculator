@@ -1,6 +1,10 @@
 // global variables
 const output = document.querySelector(".output");
+let firstNum = 0, 
+    secondNum = 0;
 
+
+// functions
 const isNotExceeding_10_digits = ()=> {
   let str = output.textContent;
 
@@ -24,13 +28,14 @@ const printToOutput = (input) => {
 };
 
 function showNumbers(){
-  printToOutput(this.dataset.key);
-  // firstDigitIsNotZero();
-  console.log(this.dataset.key);
+  const currentNum = this.dataset.key;
+  if (dotExists() && currentNum === '.') return;
+  printToOutput(currentNum);
+  firstDigitIsNotZero();
 }
 
 function firstDigitIsNotZero(){
-  outputText = output.textContent;
+  const outputText = output.textContent;
   const firstDigit = outputText.charAt(0);
 
   if (outputText.length > 1){
@@ -50,3 +55,11 @@ document.querySelectorAll('button.number').forEach(btn => {
 
 const ac = document.querySelector("button[data-key='ac']");
 ac.addEventListener('click', setOutputTextToZero);
+
+function dotExists(){
+  const outputText = output.textContent;
+  if (!outputText.includes('.')) {
+    return false;
+  }
+  return true;
+}
