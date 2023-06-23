@@ -75,6 +75,8 @@ function dotExists() {
 
 function operate(a, b, operation) {
   let total = 0;
+  a = Number(a);
+  b = Number(b);
   switch (operation) {
     case "+":
       total = a + b;
@@ -94,3 +96,22 @@ function operate(a, b, operation) {
   }
   return total;
 }
+
+function setOperation(){
+  currentOperation = this.textContent;
+  firstNum = output.textContent;
+  setOutputTextToZero();
+}
+
+function getTotal(){
+  secondNum = output.textContent;
+  output.textContent = operate(firstNum, secondNum, currentOperation);
+}
+
+const operations = document.querySelectorAll('.operations');
+operations.forEach(button => {
+  button.addEventListener('click', setOperation);
+});
+
+const totalButton = document.querySelector('.total');
+totalButton.addEventListener('click', getTotal);

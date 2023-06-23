@@ -59,6 +59,7 @@ button:active {
   flex: 2;
 }
 
-.operations {
+.operations,
+.total {
   background-color: #D8C4B6;
 }
