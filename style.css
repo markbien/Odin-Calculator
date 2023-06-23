@@ -28,13 +28,18 @@ main {
   flex-direction: column;
 }
 
+.answer {
+  text-align: right;
+  font-size: 2.5rem;
+}
+
 .output {
-  height: 60px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: flex-end;
-  padding-bottom: 5px;
-  font-size: 1.6rem;
+  text-align: right;
+  font-size: 1.5rem;
+}
+
+hr {
+  border: 1px solid #D8C4B6;
 }
 
 .row {
