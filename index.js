@@ -5,33 +5,21 @@ let firstNum = 0,
 let currentOperation = "";
 
 // functions
-const isNotExceeding_10_digits = () => {
+const isNotExceeding_n_digits = (limit) => {
   let str = output.textContent;
 
-  if (str.length < 13) {
+  if (str.length < limit) {
     return true;
   }
   return false;
 };
 
-const checkInput = (input) => {
-  if (!isNotExceeding_10_digits()) return false;
-  return true;
-};
-
-const printToOutput = (input) => {
-  if (checkInput(input)) {
-    let currentOutput = output.textContent;
-    currentOutput += `${input}`;
-    output.textContent = currentOutput;
+function dotExists(currentNumClicked) {
+  const outputText = output.textContent;
+  if (outputText.includes(".") && currentNumClicked === '.') {
+    return true;
   }
-};
-
-function showNumbers() {
-  const currentNum = this.dataset.key;
-  if (dotExists() && currentNum === ".") return;
-  printToOutput(currentNum);
-  firstDigitIsNotZero();
+  return false;
 }
 
 function firstDigitIsNotZero() {
@@ -44,6 +32,27 @@ function firstDigitIsNotZero() {
     }
   }
 }
+
+const isInputAccepted = input => {  
+  if (!isNotExceeding_n_digits(13)) return false;
+  if (dotExists(input)) return false;
+  return true;
+};
+
+const printToOutput = (input) => {
+  if (isInputAccepted(input)) {
+    let currentOutput = output.textContent;
+    currentOutput += `${input}`;
+    output.textContent = currentOutput;
+  }
+};
+
+function showNumbers() {
+  const currentNumClicked = this.dataset.key;
+  printToOutput(currentNumClicked);
+  firstDigitIsNotZero();
+}
+
 
 function setOutputTextToZero() {
   output.textContent = "0";
@@ -65,53 +74,47 @@ ac.addEventListener("click", function () {
   reset();
 });
 
-function dotExists() {
-  const outputText = output.textContent;
-  if (!outputText.includes(".")) {
-    return false;
-  }
-  return true;
-}
 
-function operate(a, b, operation) {
-  let total = 0;
-  a = Number(a);
-  b = Number(b);
-  switch (operation) {
-    case "+":
-      total = a + b;
-      break;
-    case "-":
-      total = a - b;
-      break;
-    case "*":
-      total = a * b;
-      break;
-    case "/":
-      if (b === 0) {
-        return "You can't divide by 0!";
-      }
-      total = a / b;
-      break;
-  }
-  return total;
-}
 
-function setOperation(){
-  currentOperation = this.textContent;
-  firstNum = output.textContent;
-  setOutputTextToZero();
-}
+// function operate(a, b, operation) {
+//   let total = 0;
+//   a = Number(a);
+//   b = Number(b);
+//   switch (operation) {
+//     case "+":
+//       total = a + b;
+//       break;
+//     case "-":
+//       total = a - b;
+//       break;
+//     case "*":
+//       total = a * b;
+//       break;
+//     case "/":
+//       if (b === 0) {
+//         return "You can't divide by 0!";
+//       }
+//       total = a / b;
+//       break;
+//   }
+//   return total;
+// }
 
-function getTotal(){
-  secondNum = output.textContent;
-  output.textContent = operate(firstNum, secondNum, currentOperation);
-}
+// function setOperation(){
+//   currentOperation = this.textContent;
+//   firstNum = output.textContent;
+//   setOutputTextToZero();
+// }
 
-const operations = document.querySelectorAll('.operations');
-operations.forEach(button => {
-  button.addEventListener('click', setOperation);
-});
+// function getTotal(){
+//   secondNum = output.textContent;
+//   output.textContent = operate(firstNum, secondNum, currentOperation);
+// }
 
-const totalButton = document.querySelector('.total');
-totalButton.addEventListener('click', getTotal);
+// const operations = document.querySelectorAll('.operations');
+// operations.forEach(button => {
+//   button.addEventListener('click', setOperation);
+// });
+
+// const totalButton = document.querySelector('.total');
+// totalButton.addEventListener('click', getTotal);
