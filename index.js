@@ -125,3 +125,10 @@ operationButtons.forEach((button) =>
     calculator.clearDisplay();
   })
 );
+
+window.addEventListener('keydown', function(e){
+  const buttonCode = e.code;
+  const currentNum = document.querySelector(`button[data-key=${buttonCode}]`);
+  if (!currentNum) return;
+  calculator.append(currentNum.textContent);
+});
