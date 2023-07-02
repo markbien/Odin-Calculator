@@ -50,7 +50,11 @@ const calculator = {
     answerDisplay.textContent = newText;
   },
   updateResultDisplay: function (answer) {
-    resultDisplay.textContent = answer;
+    if (answer.toString().includes('.')) {
+      resultDisplay.textContent = answer.toFixed(2);
+    }else {
+      resultDisplay.textContent = answer;
+    }    
   },
   clearDisplay: function () {
     answerDisplay.textContent = "0";

@@ -29,10 +29,11 @@ main {
 }
 
 .result {
-  text-align: right;
+  text-align: left;
   font-size: 2rem;
   font-weight: bold;
   padding: 15px 0;
+  overflow-wrap: break-word;
 }
 
 .answer {
