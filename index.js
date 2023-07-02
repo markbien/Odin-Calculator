@@ -3,7 +3,6 @@ const answerDisplay = document.querySelector(".answer");
 const resultDisplay = document.querySelector(".result");
 const numberButtons = document.querySelectorAll("button.number");
 const operationButtons = document.querySelectorAll("button.operations");
-const equalsButton = document.querySelector(".total");
 const allClear = document.querySelector(".ac");
 
 const calculator = {
@@ -90,6 +89,7 @@ numberButtons.forEach((button) => {
 
 allClear.addEventListener("click", function () {
   calculator.reset();
+  calculator.clearDisplay();
   calculator.enableButtons();
 });
 
