@@ -18,8 +18,8 @@ main {
 }
 
 .container {
-  height: 300px;
-  width: 200px;
+  height: 400px;
+  width: 300px;
   padding: 5px;
   background-color: white;
   border-radius: 3px;
@@ -28,18 +28,17 @@ main {
   flex-direction: column;
 }
 
+.result {
+  text-align: right;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 15px 0;
+}
+
 .answer {
   text-align: right;
-  font-size: 2.5rem;
-}
-
-.output {
-  text-align: right;
-  font-size: 1.5rem;
-}
-
-hr {
-  border: 1px solid #D8C4B6;
+  font-size: 2rem;
+  letter-spacing: 1px;
 }
 
 .row {
@@ -53,6 +52,8 @@ button {
   border-radius: 3px;
   border: 1px solid white;
   cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 button:active {
@@ -64,7 +65,6 @@ button:active {
   flex: 2;
 }
 
-.operations,
-.total {
+.operations {
   background-color: #D8C4B6;
 }

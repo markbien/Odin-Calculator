@@ -1,127 +1,122 @@
-// global variables
-const output = document.querySelector(".output");
-const answer = document.querySelector('.answer');
-let firstNum = 0,
-  secondNum = 0;
-let currentOperation = "";
+// Global variables
+const answerDisplay = document.querySelector(".answer");
+const resultDisplay = document.querySelector(".result");
+const numberButtons = document.querySelectorAll("button.number");
+const operationButtons = document.querySelectorAll("button.operations");
+const equalsButton = document.querySelector(".total");
+const allClear = document.querySelector(".ac");
 
-// functions
-const isNotExceeding_n_digits = (limit) => {
-  let str = output.textContent;
-
-  if (str.length < limit) {
-    return true;
-  }
-  return false;
-};
-
-function dotExists(currentNumClicked) {
-  const outputText = output.textContent;
-  if (outputText.includes(".") && currentNumClicked === '.') {
-    return true;
-  }
-  return false;
-}
-
-function firstDigitIsNotZero() {
-  const outputText = output.textContent;
-  const firstDigit = outputText.charAt(0);
-
-  if (outputText.length > 1) {
-    if (firstDigit === "0") {
-      output.textContent = outputText.slice(1);
+const calculator = {
+  firstNum: undefined,
+  currentOperation: undefined,
+  add: function (x, y) {
+    return x + y;
+  },
+  subtract: function (x, y) {
+    return x - y;
+  },
+  multiply: function (x, y) {
+    return x * y;
+  },
+  divide: function (x, y) {
+    if (y === 0) {
+      return "Cannot divide by zero";
     }
-  }
-}
+    return x / y;
+  },
+  compute: function (x, y) {
+    switch (this.currentOperation) {
+      case "+":
+        return this.add(x, y);
+      case "-":
+        return this.subtract(x, y);
+      case "*":
+        return this.multiply(x, y);
+      case "/":
+        return this.divide(x, y);
+      default:
+        break;
+    }
+  },
+  append: function (digit) {
+    const answerDisplayCurrentText = answerDisplay.textContent;
+    if (answerDisplayCurrentText.length === 15) return;
+    if (answerDisplayCurrentText.includes(".") && digit === ".") return;
 
-const isInputAccepted = input => {  
-  if (!isNotExceeding_n_digits(13)) return false;
-  if (dotExists(input)) return false;
-  return true;
-};
-
-const printToOutput = (input) => {
-  if (isInputAccepted(input)) {
-    let currentOutput = output.textContent;
-    currentOutput += `${input}`;
-    output.textContent = currentOutput;
-  }
-};
-
-function showNumbers() {
-  const currentNumClicked = this.dataset.key;
-  printToOutput(currentNumClicked);
-  firstDigitIsNotZero();
-}
-
-
-function setOutputTextToZero() {
-  output.textContent = "0";
-}
-
-function setAnswerTextToZero() {
-  answer.textContent = "0";
-}
-
-function reset() {
-  firstNum = 0;
-  secondNum = 0;
-  currentOperation = "";
-}
-
-document.querySelectorAll("button.number").forEach((btn) => {
-  btn.addEventListener("click", showNumbers);
-});
-
-const ac = document.querySelector("button[data-key='ac']");
-ac.addEventListener("click", function () {
-  setOutputTextToZero();
-  setAnswerTextToZero();
-  reset();
-});
-
-
-function operate(a, b, operation) {
-  let total = 0;
-  a = Number(a);
-  b = Number(b);
-  switch (operation) {
-    case "+":
-      total = a + b;
-      break;
-    case "-":
-      total = a - b;
-      break;
-    case "*":
-      total = a * b;
-      break;
-    case "/":
-      if (b === 0) {
-        return "You can't divide by 0!";
+    let newText = answerDisplayCurrentText.concat(digit);
+    if (newText.length > 1 && newText[0] === "0") {
+      newText = newText.slice(1);
+    }
+    answerDisplay.textContent = newText;
+  },
+  updateResultDisplay: function (answer) {
+    resultDisplay.textContent = answer;
+  },
+  clearDisplay: function () {
+    answerDisplay.textContent = "0";
+  },
+  reset: function () {
+    this.firstNum = undefined;
+    this.currentOperation = undefined;
+    resultDisplay.textContent = 0;
+  },
+  getValue: function () {
+    return Number(answerDisplay.textContent);
+  },
+  disableButtons: function(){
+    const allButtons = document.querySelectorAll('button');
+    allButtons.forEach(button => {
+      if (button.textContent !== 'AC') {
+        button.disabled = true;
       }
-      total = a / b;
-      break;
+    });
+  },
+  enableButtons: function(){
+    const allButtons = document.querySelectorAll('button');
+    allButtons.forEach(button => {
+      if (button.textContent !== 'AC') {
+        button.disabled = false;
+      }
+    });
   }
-  return total;
-}
+};
 
-function setOperation(){
-  currentOperation = this.textContent; // Set the currentOperation variable to the current operation clicked
-  firstNum = output.textContent; // Sets firstNum to the output's text content
-  answer.textContent = firstNum; // Sets the answer's text content to firstNum
-  setOutputTextToZero();
-}
-
-function getTotal(){
-  secondNum = output.textContent;
-  answer.textContent = operate(firstNum, secondNum, currentOperation);
-  setOutputTextToZero();
-}
-
-const operations = document.querySelectorAll('.operations');
-operations.forEach(button => {
-  button.addEventListener('click', setOperation);
+numberButtons.forEach((button) => {
+  button.addEventListener("click", function () {
+    calculator.append(button.textContent);
+  });
 });
 
-const totalButton = document.querySelector('.total');
-totalButton.addEventListener('click', getTotal);
+allClear.addEventListener("click", function () {
+  calculator.reset();
+  calculator.enableButtons();
+});
+
+operationButtons.forEach((button) =>
+  button.addEventListener("click", function () {
+    const currentOperationClicked = this.textContent;
+    if (currentOperationClicked === "=") {
+      if (calculator.firstNum && calculator.currentOperation) {
+        calculator.firstNum = calculator.compute(
+          calculator.firstNum,
+          calculator.getValue()
+        );
+        calculator.updateResultDisplay(calculator.firstNum);
+        calculator.disableButtons();
+      } else return;
+    } else {
+      if (!calculator.firstNum) {
+        calculator.firstNum = calculator.getValue();
+        calculator.currentOperation = currentOperationClicked;
+      } else {
+        calculator.firstNum = calculator.compute(
+          calculator.firstNum,
+          calculator.getValue()
+        );
+        calculator.currentOperation = currentOperationClicked;
+        calculator.updateResultDisplay(calculator.firstNum);
+      }
+    }
+    calculator.clearDisplay();
+  })
+);
