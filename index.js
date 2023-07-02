@@ -20,6 +20,7 @@ const calculator = {
   },
   divide: function (x, y) {
     if (y === 0) {
+      calculator.disableButtons();
       return "Cannot divide by zero";
     }
     return x / y;
