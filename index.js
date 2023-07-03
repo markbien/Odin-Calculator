@@ -5,6 +5,7 @@ const numberButtons = document.querySelectorAll("button.number");
 const operationButtons = document.querySelectorAll("button.operations");
 const allClear = document.querySelector(".ac");
 const invertButton = document.querySelector('.invert');
+const percentButton = document.querySelector('.percent')
 
 const calculator = {
   firstNum: undefined,
@@ -119,7 +120,12 @@ const calculator = {
       currentNum *= -1;
     }
     answerDisplay.textContent = currentNum;
-  }
+  },
+  percentage: function(){
+    let currentNum = Number(answerDisplay.textContent);
+    currentNum /= 100;
+    answerDisplay.textContent = currentNum;
+  },
 };
 
 numberButtons.forEach((button) => {
@@ -148,6 +154,10 @@ operationButtons.forEach((button) =>
 
 invertButton.addEventListener('click', function(){
   calculator.invert();
+});
+
+percentButton.addEventListener("click", function(){
+  calculator.percentage();
 });
 
 
