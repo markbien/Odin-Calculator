@@ -175,10 +175,10 @@ window.addEventListener('keydown', function(e){
   }
 
   if (buttonCode === 'ShiftLeft' || buttonCode === 'ShiftRight'){
-    shiftIsPressed = true;
+    shiftIsPressed = true; // Tracks if shift is pressed
   }
 
-  const operations = ['+','-','*','/']
+  const operations = ['+','*']; // Only includes + and * since only these 2 need shift to be pressed
   if (shiftIsPressed === true) {
     const isValidOperation = operations.find(operation => {
       return operation === e.key;
@@ -195,7 +195,7 @@ window.addEventListener('keydown', function(e){
     calculator.clearDisplay();
   }
 
-  if (buttonCode === 'KeyC') {
+  if (buttonCode === 'KeyC' || buttonCode === 'KeyA') {
     calculator.reset();
     calculator.clearDisplay();
     calculator.enableButtons();
