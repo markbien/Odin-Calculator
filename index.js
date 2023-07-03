@@ -4,6 +4,7 @@ const resultDisplay = document.querySelector(".result");
 const numberButtons = document.querySelectorAll("button.number");
 const operationButtons = document.querySelectorAll("button.operations");
 const allClear = document.querySelector(".ac");
+const invertButton = document.querySelector('.invert');
 
 const calculator = {
   firstNum: undefined,
@@ -111,6 +112,13 @@ const calculator = {
       calculator.currentOperation = currentOperationClicked;
       calculator.updateResultDisplay(calculator.firstNum);
     }
+  },
+  invert: function() {
+    let currentNum = Number(answerDisplay.textContent);
+    if (currentNum !== 0) {
+      currentNum *= -1;
+    }
+    answerDisplay.textContent = currentNum;
   }
 };
 
@@ -137,6 +145,10 @@ operationButtons.forEach((button) =>
     calculator.clearDisplay();
   })
 );
+
+invertButton.addEventListener('click', function(){
+  calculator.invert();
+});
 
 
 let shiftIsPressed = false; // If shift is pressed
@@ -171,6 +183,12 @@ window.addEventListener('keydown', function(e){
   if (buttonCode === "Minus" || buttonCode === 'Slash') {
     calculator.operate(e.key);
     calculator.clearDisplay();
+  }
+
+  if (buttonCode === 'KeyC') {
+    calculator.reset();
+    calculator.clearDisplay();
+    calculator.enableButtons();
   }
   
   if (!currentNum) return;
