@@ -49,6 +49,11 @@ const calculator = {
     }
     answerDisplay.textContent = newText;
   },
+  backspace: function(){
+    let str = answerDisplay.textContent;
+    if (str.length > 1) answerDisplay.textContent = str.slice(0, -1);
+    else answerDisplay.textContent = 0;
+  },
   updateResultDisplay: function (answer) {
     if (answer.toString().includes('.')) {
       resultDisplay.textContent = answer.toFixed(2);
@@ -82,6 +87,30 @@ const calculator = {
         button.disabled = false;
       }
     });
+  },
+  equals: function(){
+    if (this.firstNum && this.currentOperation) {
+      this.firstNum = this.compute(
+        this.firstNum,
+        this.getValue()
+      );
+      this.updateResultDisplay(this.firstNum);
+      this.disableButtons();
+      this.clearDisplay();
+    } else return;
+  },
+  operate: function(currentOperationClicked){
+    if (!calculator.firstNum) {
+      calculator.firstNum = calculator.getValue();
+      calculator.currentOperation = currentOperationClicked;
+    } else {
+      calculator.firstNum = calculator.compute(
+        calculator.firstNum,
+        calculator.getValue()
+      );
+      calculator.currentOperation = currentOperationClicked;
+      calculator.updateResultDisplay(calculator.firstNum);
+    }
   }
 };
 
@@ -101,34 +130,55 @@ operationButtons.forEach((button) =>
   button.addEventListener("click", function () {
     const currentOperationClicked = this.textContent;
     if (currentOperationClicked === "=") {
-      if (calculator.firstNum && calculator.currentOperation) {
-        calculator.firstNum = calculator.compute(
-          calculator.firstNum,
-          calculator.getValue()
-        );
-        calculator.updateResultDisplay(calculator.firstNum);
-        calculator.disableButtons();
-      } else return;
+      calculator.equals();
     } else {
-      if (!calculator.firstNum) {
-        calculator.firstNum = calculator.getValue();
-        calculator.currentOperation = currentOperationClicked;
-      } else {
-        calculator.firstNum = calculator.compute(
-          calculator.firstNum,
-          calculator.getValue()
-        );
-        calculator.currentOperation = currentOperationClicked;
-        calculator.updateResultDisplay(calculator.firstNum);
-      }
+      calculator.operate(currentOperationClicked);
     }
     calculator.clearDisplay();
   })
 );
 
-window.addEventListener('keydown', function(e){
-  const buttonCode = e.code;
-  const currentNum = document.querySelector(`button[data-key=${buttonCode}]`);
+
+let shiftIsPressed = false; // If shift is pressed
+window.addEventListener('keydown', function(e){  
+  const buttonCode = e.code; // Gets the 'word' for the current button
+  const currentNum = document.querySelector(`button[data-key=${buttonCode}]`); // gets the current num pressed
+
+  if ((buttonCode === 'Equal' || buttonCode === 'Enter') && !shiftIsPressed) {
+    calculator.equals(); // Run this when = or Enter is pressed AND shiftIsPressed is false
+  } 
+  
+  if (buttonCode === 'Backspace') {
+    calculator.backspace();
+  }
+
+  if (buttonCode === 'ShiftLeft' || buttonCode === 'ShiftRight'){
+    shiftIsPressed = true;
+  }
+
+  const operations = ['+','-','*','/']
+  if (shiftIsPressed === true) {
+    const isValidOperation = operations.find(operation => {
+      return operation === e.key;
+    });
+
+    if (isValidOperation) {
+      calculator.operate(isValidOperation);
+      calculator.clearDisplay();
+    }
+  }
+
+  if (buttonCode === "Minus" || buttonCode === 'Slash') {
+    calculator.operate(e.key);
+    calculator.clearDisplay();
+  }
+  
   if (!currentNum) return;
-  calculator.append(currentNum.textContent);
+  if (shiftIsPressed === false) calculator.append(currentNum.textContent);
+});
+
+window.addEventListener('keyup', function(e){
+  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+    shiftIsPressed = false;
+  }  
 });
